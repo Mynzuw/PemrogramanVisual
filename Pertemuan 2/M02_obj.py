@@ -1,0 +1,60 @@
+import matplotlib.pyplot as plt
+import numpy as np
+
+ya = 600
+xa = 200
+yb = 200
+xb = 600
+
+
+pd = int(8); pr = 255; pg = 255; pb = 0
+
+lw = int(8); lr = 255; lg = 255; lb = 0
+
+col = int(800)
+row = int(800)
+print("col, row =", col, ", ", row)
+
+def buat_garis(y1, x1, y2, x2, pd, lw, pr, pg, pb, lr, lg, lb):
+    Gambar = np.zeros(shape=(row, col, 3), dtype=np.uint8)
+    hd = int(pd / 2)
+    hw = int(lw / 2)
+    dy = y2 - y1
+    dx = x2 - x1
+
+    for i in range(x1 - hd, x1 + hd):
+        for j in range(y1 - hd, y1 + hd):
+            if (i - x1) ** 2 + (j - y1) ** 2 < hd ** 2:
+                Gambar[j, i, 0] = pr
+                Gambar[j, i, 1] = pg
+                Gambar[j, i, 2] = pb
+
+    for i in range(x2 - hd, x2 + hd):
+        for j in range(y2 - hd, y2 + hd):  # Mengubah y1 menjadi y2
+            if (i - x2) ** 2 + (j - y2) ** 2 < hd ** 2:  # Mengubah x1 menjadi x2
+                Gambar[j, i, 0] = pr
+                Gambar[j, i, 1] = pg
+                Gambar[j, i, 2] = pb
+
+    if dy <= dx:
+        my = dy / dx
+        for i in range(x1, x2):
+            j = int(my * (i - x1) + y1)  # Mengubah - menjadi =
+            x = i
+            y = j
+            print('x, y = ', x, ',', y)
+            for i in range(x - hw, x + hw):
+                for j in range(y - hw, y + hw):
+                    if (i - x) ** 2 + (j - y) ** 2 < hw ** 2:
+                        Gambar[j, i, 0] = lr
+                        Gambar[j, i, 1] = lg
+                        Gambar[j, i, 2] = lb
+
+    return Gambar
+
+hasil = buat_garis(ya, xa, yb, xb, pd, lw, pr, pg, pb, lr, lg, lb)
+
+
+plt.figure()
+plt.imshow(hasil)
+plt.show()
